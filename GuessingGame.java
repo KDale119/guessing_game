@@ -49,6 +49,7 @@ public class GuessingGame {
             }
 
             if(!goAgain(scanner)){
+                System.out.println("\nBye - Come back soon!");
                 break;
             }
             tryCount = 1;
@@ -70,6 +71,7 @@ public class GuessingGame {
     private static boolean goAgain(Scanner scanner) {
         System.out.print("Try again? (y/n): ");
         String result = scanner.nextLine();
+
         return result.equalsIgnoreCase("y");
     }
 }
