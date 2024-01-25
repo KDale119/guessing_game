@@ -3,6 +3,8 @@ import java.util.Scanner;
 
 public class GuessingGame {
     public static void main(String[] args) {
+        int tryCount = 1;
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to the Guess the Number Game\n++++++++++++++++++++++++++++++++++++");
         System.out.println();
         while(true) {
@@ -10,25 +12,46 @@ public class GuessingGame {
             System.out.println();
 
             int computersNum = randomNumberGenerator();
-            System.out.println(computersNum); //             REMOVE WHEN DONE
-            int usersGuess = usersGuess();
+
+            int usersGuess = usersGuess(scanner);
+            do {
+                if (usersGuess - computersNum >= 10) {
+                    System.out.println("Way too high! Guess again.");
+                    usersGuess = usersGuess(scanner);
+                    tryCount++;
+                }
+                else if (computersNum - usersGuess >= 10) {
+                    System.out.println("Way too low! Guess again.");
+                    usersGuess = usersGuess(scanner);
+                    tryCount++;
+                }
+                else if (usersGuess > computersNum) {
+                    System.out.println("Too high! Guess again.");
+                    usersGuess = usersGuess(scanner);
+                    tryCount++;
+                }
+                else if (usersGuess < computersNum) {
+                    System.out.println("Too low! Guess again.");
+                    usersGuess = usersGuess(scanner);
+                    tryCount++;
+                }
 
 
-            if (usersGuess > 100) { //&& usersGuess < 1 doesnt work???
-                System.out.println("Not a valid guess\nTry again\nEnter number: ");
-            } else if(usersGuess == computersNum) {
-                System.out.println("You got it in 1 tries\nGreat work! You are a guessing wizard.");
-            } else if (usersGuess > computersNum) {
-                System.out.println("Way too high! Guess again.\nEnter number: ");
-//                usersGuess();
+            } while(usersGuess != computersNum);
+            System.out.println("You got it in " + tryCount + " " + "tries.");
+
+            if(tryCount > 7) {
+                System.out.println("What took you so long? Maybe you should take some lessons.");
+            } else if (tryCount > 3 && tryCount <= 7) {
+                System.out.println("Not too bad! You've got some potential.");
             } else {
-                System.out.println("Too low! Guess again\nEnter number: ");
-//                usersGuess();
+                System.out.println("Great Work! You are a guessing Wizard.");
             }
 
-            if(!goAgain()) {
+            if(!goAgain(scanner)){
                 break;
             }
+            tryCount = 1;
         }
     }
 
@@ -37,18 +60,16 @@ public class GuessingGame {
         return randomNum.nextInt(100)+1;
     }
 
-    private static int usersGuess() {
-        Scanner scanner = new Scanner(System.in);
+    private static int usersGuess(Scanner scanner) {
         System.out.print("Enter number: ");
         int usersInput = scanner.nextInt();
         scanner.nextLine();
         return usersInput;
 
     }
-    private static boolean goAgain() {
+    private static boolean goAgain(Scanner scanner) {
         System.out.print("Try again? (y/n): ");
-        Scanner response = new Scanner(System.in);
-        String result = response.nextLine();
+        String result = scanner.nextLine();
         return result.equalsIgnoreCase("y");
     }
 }
